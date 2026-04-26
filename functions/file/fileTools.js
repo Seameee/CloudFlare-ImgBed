@@ -104,6 +104,14 @@ export async function getFileContent(request, targetUrl, max_retries = 2) {
                 method: request.method,
                 headers: request.headers,
                 body: request.body,
+                cf: {
+                    cacheEverything: true,
+                    cacheTtlByStatus: {
+                        "200-299": 2592000,  // 30 days for success
+                        404: 60,
+                        "500-599": 0
+                    }
+                }
             });
             if (response.ok || response.status === 304) {
                 return response;
